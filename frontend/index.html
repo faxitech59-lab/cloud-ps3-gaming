@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud PS3 Gaming</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login-view" class="view">
+  <div class="card login-card">
+    <h1>🎮 Cloud PS3 Gaming</h1>
+    <p class="muted">Sign in to start your session</p>
+    <input id="login-user" type="text" placeholder="Username" autocomplete="username">
+    <input id="login-pass" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="login-btn">Sign in</button>
+    <p id="login-error" class="error"></p>
+  </div>
+</div>
+
+<div id="main-view" class="view hidden">
+  <header>
+    <h1>🎮 Cloud PS3 Gaming</h1>
+    <div>
+      <span id="pad-status" class="pill">🎮 no gamepad</span>
+      <button id="logout-btn" class="ghost">Sign out</button>
+    </div>
+  </header>
+
+  <div id="start-panel" class="card">
+    <button id="start-btn" class="big">▶ START GAME</button>
+    <ol id="start-steps" class="steps hidden">
+      <li data-step="resources">Checking server resources…</li>
+      <li data-step="emulator">Checking emulator installation…</li>
+      <li data-step="firmware">Checking your firmware…</li>
+      <li data-step="game">Checking your game files…</li>
+      <li data-step="boot">Starting emulator…</li>
+      <li data-step="stream">Starting video/audio streaming…</li>
+      <li data-step="controls">Connecting browser controls…</li>
+    </ol>
+    <p id="start-error" class="error"></p>
+  </div>
+
+  <div id="game-panel" class="hidden">
+    <div class="video-wrap">
+      <video id="stream" autoplay playsinline></video>
+      <div id="stream-overlay" class="overlay">connecting…</div>
+    </div>
+    <div class="status-grid">
+      <div class="stat"><span>CPU</span><b id="st-cpu">–</b></div>
+      <div class="stat"><span>GPU</span><b id="st-gpu">–</b></div>
+      <div class="stat"><span>RAM</span><b id="st-ram">–</b></div>
+      <div class="stat"><span>FPS</span><b id="st-fps">–</b></div>
+      <div class="stat"><span>Latency</span><b id="st-lat">–</b></div>
+      <div class="stat"><span>Stream</span><b id="st-quality">–</b></div>
+    </div>
+    <button id="stop-btn" class="danger">⏹ Stop session</button>
+    <p class="muted small">Keyboard works after clicking the video. For gamepad, press any button on your controller — Chrome/Edge recommended.</p>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

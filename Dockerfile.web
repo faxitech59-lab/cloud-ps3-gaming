@@ -1,0 +1,15 @@
+# ── Web image: UI + API + auth only (for Railway etc.) ─────────────────
+# This image has NO emulator. It serves the frontend, enforces auth, and
+# proxies all gaming traffic to a GPU server running the gaming image.
+# Railway can host THIS. It cannot host GPU-accelerated PS3 emulation.
+FROM node:20-slim
+ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /app
+COPY package.json ./
+RUN npm install --omit=dev
+COPY server/ ./server/
+COPY frontend/ ./frontend/
+ENV ROLE=web \
+    PORT=8080
+EXPOSE 8080
+CMD ["node", "server/server.js"]

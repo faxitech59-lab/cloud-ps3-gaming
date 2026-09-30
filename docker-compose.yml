@@ -1,0 +1,53 @@
+# docker-compose for single-box or split deployments.
+#
+# Single GPU box (emulator + web together):
+#   ROLE=all docker compose up --build gaming
+#
+# Split (recommended for cloud):
+#   - Web/API layer on Railway: build with Dockerfile.web, ROLE=web
+#   - Gaming server on a GPU VM:  docker compose up --build gaming
+#
+# GPU access: uncomment the `gpus:` reservation AND make sure the host has the
+# NVIDIA Container Toolkit installed. Without a GPU, RPCS3 will not be
+# playable — run `npm run hwcheck` and believe it.
+
+services:
+  gaming:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cloud-ps3-gaming:latest
+    container_name: ps3-gaming
+    env_file: .env
+    environment:
+      ROLE: ${ROLE:-all}
+    ports:
+      - "${PORT:-8080}:8080"
+    volumes:
+      - ./data/games:/data/games
+      - ./data/firmware:/data/firmware
+      - rpcs3-data:/root/.config/rpcs3
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/uinput:/dev/uinput
+    # Uncomment for NVIDIA GPUs (requires nvidia-container-toolkit on host):
+    # gpus: all
+    # Alternative legacy syntax:
+    # runtime: nvidia
+    restart: unless-stopped
+
+  # Local test of the web layer (needs GAMING_SERVER_URL in .env):
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    image: cloud-ps3-gaming-web:latest
+    env_file: .env
+    environment:
+      ROLE: web
+    ports:
+      - "8081:8080"
+    profiles: ["web"]
+
+volumes:
+  rpcs3-data:
